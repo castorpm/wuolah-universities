@@ -1,14 +1,14 @@
-import type { University } from 'types'
-import { Box, Flex } from '@chakra-ui/react'
-import Image from 'next/image'
+import type { University } from 'types';
+import { Box, Flex, Skeleton } from '@chakra-ui/react';
+import Image from 'next/image';
 
 interface UniversityCardProps {
-  university: University
+  university: University;
 }
 
 const UniversityCard = ({ university }: UniversityCardProps) => (
   <Flex
-    height="65px"
+    height="85px"
     align="center"
     columnGap="8px"
     padding="8px"
@@ -23,6 +23,6 @@ const UniversityCard = ({ university }: UniversityCardProps) => (
     </Box>
     <Box>{university.name}</Box>
   </Flex>
-)
+);
 
-export default UniversityCard
+export default UniversityCard;

@@ -1,34 +1,33 @@
-import type { GetServerSideProps, NextPage } from 'next'
-import { Box, Flex, Heading } from '@chakra-ui/react'
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { fetchUniversity } from 'api'
-import Layout from 'components/Layout'
-import Link from 'next/link'
-import Image from 'next/image'
+import type { GetServerSideProps, NextPage } from 'next';
+import { Box, Flex, Heading } from '@chakra-ui/react';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { fetchUniversity } from 'api';
+import Layout from 'components/Layout';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     ['university', { slug: context.params!.slugUniversity!.toString() }],
     fetchUniversity
-  )
+  );
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-  }
-}
+  };
+};
 
 const UniversityDetail: NextPage = (props) => {
-  console.log(props)
-  const router = useRouter()
+  const router = useRouter();
 
   const { data: university } = useQuery(
     ['university', { slug: router.query.slugUniversity!.toString() }],
     fetchUniversity
-  )
+  );
 
   return (
     <>
@@ -55,7 +54,7 @@ const UniversityDetail: NextPage = (props) => {
         </Heading>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default UniversityDetail
+export default UniversityDetail;
