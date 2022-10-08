@@ -1,9 +1,12 @@
-import type { GetServerSideProps } from 'next'
-import type { University } from '../../types'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import type { GetServerSideProps, NextPage } from 'next'
+import type { University } from 'types'
+import { Flex, Heading } from '@chakra-ui/react'
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
-import { fetchUniversities } from '../../api'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { fetchUniversities } from 'api'
+import Layout from 'components/Layout'
+import UniversityCard from 'components/universityIndex/UniversityCard'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient()
@@ -15,47 +18,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const UniversitiesIndex = () => {
-  const { data, isError, isLoading } = useQuery(
-    ['universities'],
-    fetchUniversities
-  )
+const UniversityIndex: NextPage = () => {
+  const router = useRouter()
 
-  if (isError) return <>ERROR!</>
-  if (isLoading) return <>LOADING...</>
+  const { data } = useQuery(['universities'], fetchUniversities)
 
   const universities: University[] = data.data
 
   return (
-    <Flex justify="center" paddingTop="48px">
-      <Box>
-        <Heading as="h1" marginBottom="32px">
-          Universidades
-        </Heading>
-        <Flex direction="column" rowGap="16px">
-          {universities.map((university) => (
-            <Flex
-              key={university.slug}
-              height="65px"
-              align="center"
-              columnGap="8px"
-              padding="8px"
-              border="1px solid black"
-              borderRadius="8px"
-              _hover={{
-                cursor: 'pointer',
-              }}
-            >
-              <div>
-                <Image src={university.logoUrl} alt="" width={40} height={40} />
-              </div>
-              <div>{university.name}</div>
-            </Flex>
-          ))}
-        </Flex>
-      </Box>
-    </Flex>
+    <Layout>
+      <Heading as="h1" marginBottom="32px">
+        Universidades
+      </Heading>
+      <Flex direction="column" rowGap="16px">
+        {universities.map((university) => (
+          <Link
+            key={university.slug}
+            href={`${router.route}/${university.slug}`}
+          >
+            <a>
+              <UniversityCard university={university} />
+            </a>
+          </Link>
+        ))}
+      </Flex>
+    </Layout>
   )
 }
 
-export default UniversitiesIndex
+export default UniversityIndex

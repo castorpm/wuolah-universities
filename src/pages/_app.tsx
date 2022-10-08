@@ -6,12 +6,11 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import '../styles/globals.css'
 
-function MyApp({
+const WuolahUniversitiesApp = ({
   Component,
   pageProps,
-}: AppProps<{ dehydratedState: unknown }>) {
+}: AppProps<{ dehydratedState: unknown }>) => {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
@@ -25,4 +24,4 @@ function MyApp({
   )
 }
 
-export default MyApp
+export default WuolahUniversitiesApp
