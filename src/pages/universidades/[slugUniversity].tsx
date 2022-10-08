@@ -1,6 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { fetchUniversity } from 'api'
 import Layout from 'components/Layout'
@@ -21,6 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const UniversityDetail: NextPage = (props) => {
+  console.log(props)
   const router = useRouter()
 
   const { data: university } = useQuery(
@@ -29,19 +31,30 @@ const UniversityDetail: NextPage = (props) => {
   )
 
   return (
-    <Layout>
-      <Box marginBottom="32px">
-        <Link href="/universidades">
-          <a>Volver</a>
-        </Link>
-      </Box>
-      <Flex justify="center" marginBottom="24px">
-        <Image src={university.logoUrl} alt="Logo" width="80px" height="80px" />
-      </Flex>
-      <Heading as="h1" marginBottom="32px">
-        {university.name}
-      </Heading>
-    </Layout>
+    <>
+      <Head>
+        <title>Wuolah | {university.name}</title>
+        <meta name="description" content={university.name} />
+      </Head>
+      <Layout>
+        <Box marginBottom="32px">
+          <Link href="/universidades">
+            <a>Volver</a>
+          </Link>
+        </Box>
+        <Flex justify="center" marginBottom="24px">
+          <Image
+            src={university.logoUrl}
+            alt="Logo"
+            width="80px"
+            height="80px"
+          />
+        </Flex>
+        <Heading as="h1" marginBottom="32px">
+          {university.name}
+        </Heading>
+      </Layout>
+    </>
   )
 }
 

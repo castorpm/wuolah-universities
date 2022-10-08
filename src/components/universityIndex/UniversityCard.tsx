@@ -19,7 +19,7 @@ const UniversityCard = ({ university }: UniversityCardProps) => (
     }}
   >
     <Box>
-      <Image src={university.logoUrl} alt="Logo" width={40} height={40} />
+      <Image src={university.logoUrl} alt="Logo" width="40px" height="40px" />
     </Box>
     <Box>{university.name}</Box>
   </Flex>
