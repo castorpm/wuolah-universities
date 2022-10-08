@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import theme from 'theme';
 
 const WuolahUniversitiesApp = ({
   Component,
@@ -15,7 +16,7 @@ const WuolahUniversitiesApp = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Hydrate state={pageProps.dehydratedState}>
           <Component {...pageProps} />
         </Hydrate>

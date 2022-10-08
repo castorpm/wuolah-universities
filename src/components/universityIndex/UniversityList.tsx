@@ -1,27 +1,30 @@
 import type { University } from 'types';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, Spinner } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { Fragment, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import UniversityCard from './UniversityCard';
 import { fetchUniversities } from 'api';
-import { pagination } from 'defaults';
+import { defaultPagination } from 'defaults';
+import UniversityCard from './UniversityCard';
 
 const UniversityList = () => {
   const { ref, inView } = useInView({
-    rootMargin: '50px',
+    rootMargin: '250px',
   });
 
-  const fetchUniversitiesPaginated = ({ pageParam = pagination }) =>
-    fetchUniversities(pageParam || pagination);
+  const fetchUniversitiesPaginated = ({ pageParam = 0 }) =>
+    fetchUniversities({
+      ...defaultPagination,
+      page: pageParam || defaultPagination.page,
+    });
 
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery(['universities'], fetchUniversitiesPaginated, {
-      getNextPageParam: (lastPage) => ({
-        ...pagination,
-        page: lastPage.meta.pagination.page + 1,
-      }),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.data.length === 0) return undefined;
+        return lastPage.meta.pagination.page + 1;
+      },
     });
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const UniversityList = () => {
   }, [inView, fetchNextPage]);
 
   return (
-    <Box marginBottom="50px">
+    <Box>
       <Box>
         {data ? (
           data.pages.map((page, index) => (
@@ -42,7 +45,7 @@ const UniversityList = () => {
                   href={`/universidades/${university.slug}`}
                 >
                   <a>
-                    <Box marginBottom="16px">
+                    <Box marginBottom={['16px', '32px']}>
                       <UniversityCard university={university} />
                     </Box>
                   </a>
@@ -51,11 +54,15 @@ const UniversityList = () => {
             </Fragment>
           ))
         ) : (
-          <>Cargando...</>
+          <Spinner />
         )}
+        <div ref={ref} />
       </Box>
-      {isFetchingNextPage && hasNextPage && <>Cargando...</>}
-      <div ref={ref} />
+      {hasNextPage && (
+        <Flex justify="center" height="60px" paddingTop="12px">
+          {isFetchingNextPage && <Spinner />}
+        </Flex>
+      )}
     </Box>
   );
 };

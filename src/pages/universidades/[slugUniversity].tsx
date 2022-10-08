@@ -3,10 +3,10 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { fetchUniversity } from 'api';
-import Layout from 'components/Layout';
 import Link from 'next/link';
 import Image from 'next/image';
+import { fetchUniversity } from 'api';
+import Layout from 'components/Layout';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
