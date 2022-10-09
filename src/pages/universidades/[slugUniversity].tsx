@@ -1,9 +1,10 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { Box, Flex, Heading, Link } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { default as NextLink } from 'next/link';
 import Image from 'next/image';
 import { fetchUniversity } from 'api';
 import Layout from 'components/Layout';
@@ -35,11 +36,14 @@ const UniversityDetail: NextPage = (props) => {
         <title>Wuolah | {university.name}</title>
         <meta name="description" content={university.name} />
       </Head>
+
       <Layout>
         <Box marginBottom="32px">
-          <Link href="/universidades">
-            <a>Volver</a>
-          </Link>
+          <NextLink href="/universidades">
+            <Link>
+              <ChevronLeftIcon /> Volver a la lista
+            </Link>
+          </NextLink>
         </Box>
         <Flex justify="center" marginBottom="24px">
           <Image
