@@ -4,9 +4,6 @@ import axios from 'axios';
 
 const BASE_URL = 'https://api.wuolah.com/v2';
 
-const fetchFromBackend = (path: string) =>
-  axios.get(`${BASE_URL}${path}`).then((res) => res.data);
-
 export const fetchUniversities = (pagination: Pagination) =>
   axios
     .get(`${BASE_URL}/universities`, {
@@ -21,5 +18,5 @@ export const fetchUniversity = ({
   queryKey,
 }: QueryFunctionContext<[string, { slug: string }]>) => {
   const [_key, { slug }] = queryKey;
-  return fetchFromBackend(`/universities/${slug}`);
+  return axios.get(`${BASE_URL}/universities/${slug}`).then((res) => res.data);
 };

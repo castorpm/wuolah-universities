@@ -45,7 +45,7 @@ const UniversityList = () => {
                   href={`/universidades/${university.slug}`}
                 >
                   <a>
-                    <Box marginBottom={['16px', '32px']}>
+                    <Box marginBottom={['16px', '24px']}>
                       <UniversityCard university={university} />
                     </Box>
                   </a>

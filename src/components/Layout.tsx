@@ -6,20 +6,20 @@ interface LayoutProps {
   children: ReactNode;
 }
 
+const animationProps = {
+  as: motion.div,
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: {
+    duration: '1s',
+  },
+};
+
 const Layout = ({ children }: LayoutProps) => (
-  <Box
-    as={motion.div}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{
-      duration: '1s',
-    }}
-  >
-    <Container maxWidth="2xl" paddingTop={['24px', '48px']}>
-      <Box>{children}</Box>
-    </Container>
-  </Box>
+  <Container {...animationProps} maxWidth="2xl" paddingTop={['32px', '48px']}>
+    <Box>{children}</Box>
+  </Container>
 );
 
 export default Layout;

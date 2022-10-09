@@ -1,13 +1,15 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading, Link } from '@chakra-ui/react';
+import { Box, Heading, Link, Text } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import Error from 'next/error';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { default as NextLink } from 'next/link';
-import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { fetchUniversity } from 'api';
 import Layout from 'components/Layout';
+import ContactSection from 'components/universityDetail/ContactSection';
+import InfoSection from 'components/universityDetail/InfoSection';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
@@ -22,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const UniversityDetail: NextPage = (props) => {
+const UniversityDetail: NextPage = () => {
   const router = useRouter();
 
   const { data: university } = useQuery(
@@ -30,32 +32,45 @@ const UniversityDetail: NextPage = (props) => {
     fetchUniversity
   );
 
+  if (!university) return <Error statusCode={404} />;
+
   return (
     <>
       <Head>
-        <title>Wuolah | {university.name}</title>
-        <meta name="description" content={university.name} />
+        <title>Wuolah | Universidades | {university.name}</title>
+        <meta
+          name="description"
+          content={`Página de directorio para ${university.name}`}
+        />
       </Head>
 
       <Layout>
         <Box marginBottom="32px">
-          <NextLink href="/universidades">
+          <NextLink href="/universidades" passHref>
             <Link>
               <ChevronLeftIcon /> Volver a la lista
             </Link>
           </NextLink>
         </Box>
-        <Flex justify="center" marginBottom="24px">
-          <Image
-            src={university.logoUrl}
-            alt="Logo"
-            width="80px"
-            height="80px"
-          />
-        </Flex>
-        <Heading as="h1" marginBottom="32px">
-          {university.name}
-        </Heading>
+
+        <Box marginBottom="32px">
+          <Heading as="h1" marginBottom="12px">
+            {university.name}
+          </Heading>
+          <Text fontSize="lg">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a
+            bibendum eros. Nullam id augue feugiat, lacinia neque ac, fermentum
+            elit. In dolor libero, tempus a augue a, placerat ultrices nisi.
+          </Text>
+        </Box>
+
+        <Box as="section" marginBottom="32px">
+          <InfoSection university={university} />
+        </Box>
+
+        <Box as="section">
+          <ContactSection university={university} />
+        </Box>
       </Layout>
     </>
   );
